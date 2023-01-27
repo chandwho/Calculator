@@ -1,29 +1,36 @@
-function add(a,b){
-    return +a + +b;
+let showButton = document.querySelectorAll(".show-button");
+let display = document.querySelector("#calc-display")
+let operator = document.querySelectorAll(".operators")
+
+showButton.forEach(button => {
+    button.addEventListener("click", getInput);
+});
+
+
+function getInput(e){
+    display.innerText += e.target.innerText; 
+    let value = display.innerText;
+
+    getExpression(value);
 }
 
-function subtract(a,b){
-    return +a - +b;
+
+function getExpression(expression){
+
+
+    position = expression.search(/[+-/X]/);
+    a = expression.slice(0,position);
+    b = expression.slice(position+1, expression.length);
+    op = expression.charAt(position);
+
+    operate(a,b,op);
 }
 
-function multiply(a,b){
-    return +a * +b;
-}
+//Operations
 
-function divide(a,b){
-    if(b!= 0){
-        return +a / +b;
-    }
-    else
-    alert("Cannot divide by 0");
-}
+function operate(a,b,op){
 
-function operate(){
-    let operator = prompt("Enter operator","")
-
-    let a = prompt("Enter a value","")
-    let b = prompt("Enter a value","")
-    switch(operator){
+    switch(op){
 
         case '+':
             console.log(add(a,b));
@@ -32,14 +39,35 @@ function operate(){
         case '-':
             console.log(subtract(a,b));
             break;
-        case '*':
+        case 'X':
             console.log(multiply(a,b));
             break;
             
         case '/':
             console.log(divide(a,b));
+            if(b=='0'){
+                display.innerText = "Are you mad or what?";
+            }
             break;
     }
 }
 
-//window.onload =  operate;
+//Calculation
+
+function add(a,b){
+    return Number(a) + Number(b);
+}
+
+function subtract(a,b){
+    return Number(a) - Number(b);
+}
+
+function multiply(a,b){
+    return Number(a) * Number(b);
+}
+
+function divide(a,b){
+    
+    return Number(a) / Number(b);
+
+}
