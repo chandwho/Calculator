@@ -1,30 +1,86 @@
-let showButton = document.querySelectorAll(".show-button");
-let display = document.querySelector("#calc-display")
-let operator = document.querySelectorAll(".operators")
+let currentOperand = previousOperand = op = "";
 
-showButton.forEach(button => {
-    button.addEventListener("click", getInput);
+
+const numberButtons = document.querySelectorAll('.number-buttons');
+const operatorButtons = document.querySelectorAll('.operator-buttons');
+const previousDisplayOperand = document.querySelector('#previous-display-operand');
+const currentDisplayOperand = document.querySelector('#current-display-operand');
+const equalButton = document.querySelector('#equal-button');
+const clearButton = document.querySelector('#clear-button');
+const backButton = document.querySelector('#back-button');
+
+numberButtons.forEach(button => {
+    button.addEventListener('click', (e) => {
+        numberInput(e.target.textContent);
+    })
 });
 
+function numberInput(number){
+    if(number == '.' && currentOperand.includes('.')){
+        return
+    }
 
-function getInput(e){
-    display.innerText += e.target.innerText; 
-    let value = display.innerText;
+    currentOperand += number;
+    currentDisplayOperand.textContent = currentOperand;
 
-    getExpression(value);
 }
 
 
-function getExpression(expression){
+operatorButtons.forEach(button => {
 
+    button.addEventListener('click', (e) => {
+        operatorInput(e.target.textContent);
+    })
+});
 
-    position = expression.search(/[+-/X]/);
-    a = expression.slice(0,position);
-    b = expression.slice(position+1, expression.length);
-    op = expression.charAt(position);
+function operatorInput(operator){
+    
+    if(op != ''){
+        previousOperand = operate(parseFloat(previousOperand), parseFloat(currentOperand), op);
+        op = operator;
+        previousDisplayOperand.textContent = previousOperand.toString() + op;
+    }
 
-    operate(a,b,op);
+    //Unable to display whole expression on the currentDisplayOperand
+    else{
+    op = operator;  
+    previousOperand = currentOperand; 
+    }
+    currentOperand = "";
+    previousDisplayOperand.textContent = previousOperand + op;
+    currentDisplayOperand.textContent = currentOperand;
 }
+
+
+equalButton.addEventListener("click", ()=>{
+
+    if(currentOperand != "" && previousOperand !="" && op !="") //Prevents successive input of '='
+    displayResult();
+});
+
+function displayResult(){
+    //previousDisplayOperand.textContent = previousOperand + op + currentOperand; //shows complete expression on top
+    currentOperand = operate(parseFloat(previousOperand), parseFloat(currentOperand), op);
+    currentDisplayOperand.textContent = currentOperand.toString();
+    op = ""
+    console.log(previousOperand)
+    console.log(currentOperand)
+}
+
+clearButton.addEventListener("click",()=>{
+
+    currentDisplayOperand.textContent = "";
+    previousDisplayOperand.textContent = "";
+    currentOperand = "";
+    previousOperand = "";
+    op = "";
+});
+
+backButton.addEventListener("click", ()=>{
+    if(currentOperand == "") return
+    currentOperand  = currentOperand.slice(0,-1)
+    currentDisplayOperand.textContent = currentOperand;
+});
 
 //Operations
 
@@ -33,41 +89,29 @@ function operate(a,b,op){
     switch(op){
 
         case '+':
-            console.log(add(a,b));
+            return Math.round((a * 10000) + (b * 10000))/10000;
             break;
         
         case '-':
-            console.log(subtract(a,b));
+            return Math.round((a * 10000) - (b * 10000))/10000;
             break;
-        case 'X':
-            console.log(multiply(a,b));
+        case 'x':
+            return Math.round((a * 10000) * (b * 10000))/10000;
             break;
             
-        case '/':
-            console.log(divide(a,b));
+        case '÷':
             if(b=='0'){
-                display.innerText = "Are you mad or what?";
+            return "Are you mad or what?";
             }
+            return Math.round((a * 10000) / (b * 10000))/10000;
+            
             break;
     }
 }
 
-//Calculation
 
-function add(a,b){
-    return Number(a) + Number(b);
-}
-
-function subtract(a,b){
-    return Number(a) - Number(b);
-}
-
-function multiply(a,b){
-    return Number(a) * Number(b);
-}
-
-function divide(a,b){
-    
-    return Number(a) / Number(b);
-
-}
+//Pending fixes--> 
+// 2. Entering of operators in succession
+// 3. Entering of = in succession
+// 4. Length/rounding-off of input
+// 5. Add keyboard support
