@@ -9,6 +9,7 @@ const equalButton = document.querySelector('#equal-button');
 const clearButton = document.querySelector('#clear-button');
 const backButton = document.querySelector('#back-button');
 
+//Input numbers
 numberButtons.forEach(button => {
     button.addEventListener('click', (e) => {
         numberInput(e.target.textContent);
@@ -19,24 +20,27 @@ function numberInput(number){
     if(number == '.' && currentOperand.includes('.')){
         return
     }
-
+    if(currentOperand.length<9){
     currentOperand += number;
     currentDisplayOperand.textContent = currentOperand;
-
+    }
 }
 
+//Operator input and display numbers on screen
 
 operatorButtons.forEach(button => {
+   
+        button.addEventListener('click', (e) => {
+            if(currentOperand!= "" && currentOperand!= undefined ) //prevents successive input of operators
+            operatorInput(e.target.textContent);
+        })
 
-    button.addEventListener('click', (e) => {
-        operatorInput(e.target.textContent);
-    })
 });
 
 function operatorInput(operator){
     
     if(op != ''){
-        previousOperand = operate(parseFloat(previousOperand), parseFloat(currentOperand), op);
+        previousOperand = operate(previousOperand, currentOperand, op);
         op = operator;
         previousDisplayOperand.textContent = previousOperand.toString() + op;
     }
@@ -52,6 +56,7 @@ function operatorInput(operator){
 }
 
 
+//Final result after pressing '='
 equalButton.addEventListener("click", ()=>{
 
     if(currentOperand != "" && previousOperand !="" && op !="") //Prevents successive input of '='
@@ -59,22 +64,23 @@ equalButton.addEventListener("click", ()=>{
 });
 
 function displayResult(){
-    //previousDisplayOperand.textContent = previousOperand + op + currentOperand; //shows complete expression on top
-    currentOperand = operate(parseFloat(previousOperand), parseFloat(currentOperand), op);
+    previousDisplayOperand.textContent = previousOperand + op + currentOperand; //shows complete expression on top
+    currentOperand = operate(previousOperand, currentOperand, op);
     currentDisplayOperand.textContent = currentOperand.toString();
-    op = ""
-    console.log(previousOperand)
-    console.log(currentOperand)
+    op = "";
 }
 
-clearButton.addEventListener("click",()=>{
 
-    currentDisplayOperand.textContent = "";
-    previousDisplayOperand.textContent = "";
-    currentOperand = "";
-    previousOperand = "";
-    op = "";
-});
+//Clear screen
+clearButton.addEventListener("click", clearScreen);
+
+function clearScreen(){
+currentDisplayOperand.textContent = "";
+previousDisplayOperand.textContent = "";
+currentOperand = "";
+previousOperand = "";
+op = "";
+}
 
 backButton.addEventListener("click", ()=>{
     if(currentOperand == "") return
@@ -82,36 +88,36 @@ backButton.addEventListener("click", ()=>{
     currentDisplayOperand.textContent = currentOperand;
 });
 
-//Operations
+//Calculation
 
 function operate(a,b,op){
 
     switch(op){
 
         case '+':
-            return Math.round((a * 10000) + (b * 10000))/10000;
-            break;
+            return Math.round((a * 1000000) + (b * 1000000))/1000000;
         
         case '-':
-            return Math.round((a * 10000) - (b * 10000))/10000;
-            break;
+            return Math.round((a * 100000) - (b * 100000))/100000;
+
         case 'x':
-            return Math.round((a * 10000) * (b * 10000))/10000;
-            break;
+            return Math.round((a * 100000) * (b * 100000))/10000000000;
             
         case '÷':
-            if(b=='0'){
-            return "Are you mad or what?";
+            if(b== '0'){
+            currentDisplayOperand.textContent = "Are you mad or what?";
+            previousDisplayOperand.textContent = ""
+            currentOperand = previousOperand;
+            previousOperand = "";
+            op = ""
+            return;
             }
-            return Math.round((a * 10000) / (b * 10000))/10000;
-            
-            break;
+            return Math.round((a * 100000) / (b * 100000))/100000;         
     }
 }
 
 
 //Pending fixes--> 
-// 2. Entering of operators in succession
-// 3. Entering of = in succession
-// 4. Length/rounding-off of input
-// 5. Add keyboard support
+
+// 1. Add keyboard support
+// 2. Initial no. on display should be "0"
