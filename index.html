@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Google Font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Shadows+Into+Light&family=Sofia+Sans&display=swap" rel="stylesheet"> 
+    
     <link rel="stylesheet" href="style.css">
     <title>Calculator</title>
 </head>
@@ -11,49 +16,53 @@
     
     <div class="container">
         
-        <div class="display">0</div>
+        <div id="calc-display">
+            <div id="previous-display-operand"></div>
+            <div id="current-display-operand" ></div>
+        </div>
+        
             <div class="keys">
                 <div class="top-row">
-                    <div><button class="button" id="clear-button">Clear</button>
+                    <div><button class="button" id="clear-button">AC</button>
                     </div>
-                    <div><button class="button" id="back-button">Back</button>
+                    <div><button class="button" id="back-button">CE</button>
                     </div>
-                    <div><button class="button operators">/</button>
+                    <div><button class="button operator-buttons">÷</button>
                     </div>
                 </div>
                 
                 <div class="bottom-rows">
-                    <div><button class="button">7</button>
+                    <div><button class="button number-buttons">7</button>
                     </div>
-                    <div><button class="button">8</button>
+                    <div><button class="button number-buttons">8</button>
                     </div>
-                    <div><button class="button">9</button>
+                    <div><button class="button number-buttons">9</button>
                     </div>
-                    <div><button class="button operators">X</button>
+                    <div><button class="button operator-buttons">x</button>
                     </div>
-                    <div><button class="button">4</button>
+                    <div><button class="button number-buttons">4</button>
                     </div>
-                    <div><button class="button">5</button>
+                    <div><button class="button number-buttons">5</button>
                     </div>
-                    <div><button class="button">6</button>
+                    <div><button class="button number-buttons">6</button>
                     </div>
-                    <div><button class="button operators">-</button>
+                    <div><button class="button operator-buttons">-</button>
                     </div>
-                    <div><button class="button">1</button>
+                    <div><button class="button number-buttons">1</button>
                     </div>
-                    <div><button class="button">2</button>
+                    <div><button class="button number-buttons">2</button>
                     </div>
-                    <div><button class="button">3</button>
+                    <div><button class="button number-buttons">3</button>
                     </div>
                     
                     
-                    <div id="plus"><button class="button operators">+</button>
+                    <div id="plus"><button class="button operator-buttons">+</button>
                     </div>
-                    <div><button class="button">0</button>
+                    <div><button class="button number-buttons">0</button>
                     </div>
-                    <div><button class="button">.</button>
+                    <div><button class="button number-buttons">.</button>
                     </div>
-                    <div><button id="calc-button" class="button">=</button>
+                    <div><button id="equal-button" class="button">=</button>
                     </div>
                 </div>
                 
@@ -62,7 +71,7 @@
     </div>
 
     <div class="footer">
-        <h3>Footer</h3>
+        Created by @chandwho
     </div>
 
     <script src="script.js"></script>
